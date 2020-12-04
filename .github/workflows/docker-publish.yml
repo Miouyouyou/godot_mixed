@@ -18,10 +18,6 @@ env:
   IMAGE_NAME: godot-v-sekai
 
 jobs:
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  test:
-    runs-on: ubuntu-latest
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
