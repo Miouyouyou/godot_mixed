@@ -23,22 +23,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Run tests
-        run: |
-          docker run -v /tmp/host:/host $IMAGE_NAME
-      - uses: actions/upload-artifact@v2
-        with:
-          name: godot-v-sekai-release
-          path: /tmp/host/godot
-
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
-  push:
-    # Ensure test job passes before pushing image.
-    needs: test
+  build:
 
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
@@ -48,6 +35,9 @@ jobs:
 
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME
+      
+      - name: Run image
+        run: docker run -v /tmp/host:/host $IMAGE_NAME
 
       - name: Log into registry
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
@@ -73,3 +63,10 @@ jobs:
 
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+      
+      - uses: actions/upload-artifact@v2
+        with:
+          name: godot-v-sekai
+          path: /tmp/host/ # or path/to/artifact
+
+    
