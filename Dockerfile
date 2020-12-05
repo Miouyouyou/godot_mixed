@@ -1,5 +1,7 @@
 FROM ubuntu AS builder
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update
 
 RUN apt-get -y install build-essential scons pkg-config libx11-dev libxcursor-dev libxinerama-dev libgl1-mesa-dev libglu-dev libasound2-dev libpulse-dev libudev-dev libxi-dev libxrandr-dev yasm git
